@@ -6,16 +6,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { Ionicons } from '@expo/vector-icons';
+import HomeScreen from "./components/screens/HomeScreen";
 
-let HomeScreen = () => {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  )
-}
+import { Ionicons } from '@expo/vector-icons';
 
 let SettingsScreen = (props) => {
   return (
