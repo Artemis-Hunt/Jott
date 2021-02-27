@@ -6,8 +6,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NotePreview, NoteEditor } from './components/notes/Note.js';
+import { TodoList } from './components/todo/Todo.js';    // Put stuff here
 
 import NoteScreen from "./components/screens/NoteScreen.js";
+import TodoScreen from "./components/screens/TodoScreen.js";
 
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -43,6 +45,16 @@ let NoteStackComponent = () => {
   )
 }
 
+// TodoStack for the Todo Home Page
+const TodoStack = createStackNavigator();
+let TodoStackComponent = () => {
+  return(
+    <TodoStack.Navigator initialRouteName="TodoScreen">
+      <TodoStack.Screen name="TodoScreen" component={TodoScreen} />
+    </TodoStack.Navigator>
+  )
+}
+
 const SettingsStack = createStackNavigator();
 let SettingsStackComponent = () => {
   return (
@@ -65,6 +77,8 @@ export default function App() {
             switch (route.name) {
               case "Notes": iconName = focused ? "book" : "book-outline";
                 break;
+              case "Todo": iconName = focused ? "checksquare" : "checksquareo";
+                break;
               case "Settings": iconName = focused ? "md-settings" : "md-settings-outline";
                 break;
             }
@@ -73,6 +87,7 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Notes" component={NoteStackComponent} />
+        <Tab.Screen name="Todo" component={TodoStackComponent} />
         <Tab.Screen name="Settings" component={SettingsStackComponent} />
       </Tab.Navigator>
     </NavigationContainer>
