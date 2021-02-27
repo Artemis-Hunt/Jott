@@ -21,7 +21,7 @@ const createAndReturnNote = (title, text) => {
   return Note;
 }
 
-const NotePreview = ({ note }) => {
+const NotePreview = ({ note, navigation }) => {
 
   const parseDateTimeAsString = (note) => {
     let tmp_created = "Created " + note.DateCreated + " " + note.TimeCreated;

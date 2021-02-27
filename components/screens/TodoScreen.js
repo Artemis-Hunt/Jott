@@ -36,7 +36,7 @@ const HomeScreen = (props) => {
                 numColumns={1}
                 data={data}
                 renderItem={renderItem}
-                onDragStart={() => setDragging(true)}
+                onDragWillStart={() => setDragging(true)}
                 onDragRelease={data => {
                         setData(data);
                         setDragging(false);

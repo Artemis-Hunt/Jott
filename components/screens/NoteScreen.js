@@ -9,7 +9,7 @@ import {
 import { DraggableGrid } from 'react-native-draggable-grid';
 import { createAndReturnNote, NoteEditor, NotePreview } from '../notes/Note'
 
-const HomeScreen = () => {
+const NoteScreen = (props) => {
     const sampleData = new Array(25);
     for (let i = 0; i < sampleData.length; i++) {
         sampleData[i] = JSON.parse(JSON.stringify(createAndReturnNote()));
@@ -22,6 +22,7 @@ const HomeScreen = () => {
             <View style={styles.notePreview}>
                 <NotePreview
                     note={item}
+                    navigation={props.navigation}
                 />
             </View>
         );
@@ -38,7 +39,7 @@ const HomeScreen = () => {
                 numColumns={2}
                 data={data}
                 renderItem={renderItem}
-                onDragStart={() => setDragging(true)}
+                onDragWillStart={() => setDragging(true)}
                 onDragRelease={data => {
                     setData(data);
                     setDragging(false);
@@ -50,7 +51,7 @@ const HomeScreen = () => {
 
 }
 
-export default HomeScreen;
+export default NoteScreen;
 
 const styles = StyleSheet.create({
     container: {
