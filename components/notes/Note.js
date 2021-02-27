@@ -69,17 +69,12 @@ const NotePreviewStyles = StyleSheet.create({
   MainContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#EEE'
+    backgroundColor: '#FFF',
+    borderRadius: 10,
   },
   MainButton: {
     flex: 1,
-    marginTop: 10,
-    marginRight: 30,
-    marginLeft: 30,
-    paddingTop: 15,
-    paddingBottom: 15,
     backgroundColor: 'skyblue',
-    borderRadius: 10,
     flexDirection: 'column',
     width: null,  // Defined as a parameter?
     height: null   // Defined as a parameter?

@@ -10,42 +10,42 @@ import { DraggableGrid } from 'react-native-draggable-grid';
 import { createAndReturnNote, NoteEditor, NotePreview } from '../notes/Note'
 
 const HomeScreen = () => {
-    const sampleData = new Array(5);
-    for(let i = 0; i < sampleData.length; i++) {
+    const sampleData = new Array(25);
+    for (let i = 0; i < sampleData.length; i++) {
         sampleData[i] = JSON.parse(JSON.stringify(createAndReturnNote()));
-        sampleData[i].key = Math.floor(Math.random() * 100000);
+        sampleData[i].key = sampleData[i].Title + i;
     }
 
     const [data, setData] = useState(sampleData);
     const renderItem = (item) => {
         return (
-            // <NotePreview
-            //     note={item}
-            // />
-        <View
-            key={item.key}
-          >
-            <Text>{item.Title}</Text>
-          </View>
+            <View style={styles.notePreview}>
+                <NotePreview
+                    note={item}
+                />
+            </View>
         );
     }
 
     const [dragging, setDragging] = useState(false);
 
     return (
-        <View   style={styles.container}>
+        <ScrollView
+            style={styles.container}
+            scrollEnabled={!dragging}
+        >
             <DraggableGrid
                 numColumns={2}
                 data={data}
                 renderItem={renderItem}
                 onDragStart={() => setDragging(true)}
                 onDragRelease={data => {
-                        setData(data);
-                        setDragging(false);
-                    }
+                    setData(data);
+                    setDragging(false);
+                }
                 }
             />
-        </View>
+        </ScrollView>
     )
 
 }
@@ -59,7 +59,10 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     notePreview: {
-        flex: 1 / 2,
-        borderWidth: 1
+        marginTop: 10,
+        marginRight: 30,
+        marginLeft: 30,
+        paddingTop: 15,
+        paddingBottom: 15,
     }
 });
