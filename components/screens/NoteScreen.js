@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -12,21 +12,20 @@ import { createAndReturnNote, NoteEditor, NotePreview } from '../notes/Note'
 import { addNoteToDb, fetchNotesFromDb, saveNotesToDb } from "../database/pouchdb"
 
 const NoteScreen = (props) => {
-    const [data, setData] = useState(new Array(0));
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         fetchNotesFromDb().then(data => setData(data));
         props.navigation.setOptions({
             headerRight: () =>
-                <Button
-                    onPress={() => {
-                        let tempData = [...data];
-                        tempData.unshift(createAndReturnNote());
-                        setData(tempData);
-                        saveNotesToDb(data);
-                    }
-                    }
-                    title={"Add"} />
+                    <Button
+                        onPress={() => {
+                            let oldData = data;
+                            setData(data => [createAndReturnNote(), ...data]);
+                            saveNotesToDb(data);
+                        }
+                        }
+                        title={"Add"} />
         })
     }, [])
 
