@@ -13,7 +13,7 @@ import { DraggableGrid } from 'react-native-draggable-grid';
 const Item = ({item}) => {
     return(
         <View>
-            <Text>{item.name}</Text>
+            <Text>will be replaced</Text>
         </View>
     )
 }

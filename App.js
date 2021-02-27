@@ -5,6 +5,7 @@ import { StyleSheet, Button, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NotePreview, NoteEditor } from './components/notes';
 
 import HomeScreen from "./components/screens/HomeScreen";
 
@@ -40,6 +41,17 @@ let HomeStackComponent = () => {
   )
 }
 
+// NoteStack for the Note Home Page
+const NoteStack = createStackNavigator();
+let NoteStackComponent = () => {
+  return(
+    <NoteStack.Navigator initialRouteName="NoteScreen">
+      <NoteStack.Screen name="NotePreview" component={NotePreview} />
+      <NoteStack.Screen name="NoteEditor" component={NoteEditor} />
+    </NoteStack.Navigator>
+  )
+}
+
 const SettingsStack = createStackNavigator();
 let SettingsStackComponent = () => {
   return (
@@ -70,6 +82,8 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Home" component={HomeStackComponent} />
+        <Tab.Screen name="Notes" component={NoteStackComponent} />
+        <Tab.Screen name="Todo" component={TodoStackComponent} />
         <Tab.Screen name="Settings" component={SettingsStackComponent} />
       </Tab.Navigator>
     </NavigationContainer>
