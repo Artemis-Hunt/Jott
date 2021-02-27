@@ -5,11 +5,11 @@ import { StyleSheet, Button, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NotePreview, NoteEditor } from './components/notes';
+import { NotePreview, NoteEditor } from './components/notes/Note.js';
 
-import HomeScreen from "./components/screens/HomeScreen.js";
+import NoteScreen from "./components/screens/NoteScreen.js";
 
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 let SettingsScreen = (props) => {
   return (
@@ -32,21 +32,12 @@ let ProfileScreen = (props) => {
   )
 }
 
-const HomeStack = createStackNavigator();
-let HomeStackComponent = () => {
-  return (
-    <HomeStack.Navigator initialRouteName="HomeScreen">
-      <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
-    </HomeStack.Navigator>
-  )
-}
-
 // NoteStack for the Note Home Page
 const NoteStack = createStackNavigator();
 let NoteStackComponent = () => {
   return(
     <NoteStack.Navigator initialRouteName="NoteScreen">
-      <NoteStack.Screen name="NotePreview" component={NotePreview} />
+      <NoteStack.Screen name="NoteScreen" component={NoteScreen} />
       <NoteStack.Screen name="NoteEditor" component={NoteEditor} />
     </NoteStack.Navigator>
   )
@@ -72,7 +63,7 @@ export default function App() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             switch (route.name) {
-              case "Home": iconName = focused ? "md-home" : "md-home-outline";
+              case "Notes": iconName = focused ? "book" : "book-outline";
                 break;
               case "Settings": iconName = focused ? "md-settings" : "md-settings-outline";
                 break;
@@ -81,9 +72,7 @@ export default function App() {
           }
         })}
       >
-        <Tab.Screen name="Home" component={HomeStackComponent} />
         <Tab.Screen name="Notes" component={NoteStackComponent} />
-        <Tab.Screen name="Todo" component={TodoStackComponent} />
         <Tab.Screen name="Settings" component={SettingsStackComponent} />
       </Tab.Navigator>
     </NavigationContainer>
