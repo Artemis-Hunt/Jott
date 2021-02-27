@@ -11,12 +11,34 @@ import {
     TextInput,
     Touchable
 } from 'react-native';
+
+import {
+    responsiveHeight,
+    responsiveWidth,
+    responsiveFontSize
+} from "react-native-responsive-dimensions";
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const data = [{id: 0, text: 'test 1'}, {id: 1, text: 'test 2'}, {id: 2, text: 'test 3'}]
+// const data = [{id: 0, text: 'test 1'}, {id: 1, text: 'test 2'}, {id: 2, text: 'test 3'}]
 
+// Todo Object
+const createAndReturnTodo = (title, data) => {
+    let dateCreated = new Date();
+    let dateEdited = new Date();
+    let Todo = {
+      Title: (title.trim()=="") ? "Default Title" : title,
+      ListItems: data,
+      DateCreated: dateCreated.toLocaleDateString("en-SG"),  // Will be edited once in the constructor
+      TimeCreated: dateCreated.toLocaleTimeString("en-SG"),
+      DateEdited: dateEdited.toLocaleDateString("en-SG"),  // Will be edited once in the constructor
+      TimeEdited: dateEdited.toLocaleTimeString("en-SG")
+    }
+    return Todo;
+}
+  
 let TodoList = (props) => {
     return(
         <View style = {TodoListStyles.MainContainer}>
@@ -31,20 +53,26 @@ let TodoList = (props) => {
     )
 }
 
-let TodoPreview = (props) => {
+let TodoPreview = ({todo}) => {
+    const parseDateTimeAsString = (todo) => {
+        let tmp_created = "Created " + todo.DateCreated + " " + todo.TimeCreated;
+        let tmp_edited = "Edited " + todo.DateEdited + " " + todo.TimeEdited;
+        return tmp_created + '\n' + tmp_edited;
+    }
+
     return(
         <View style = {TodoPreviewStyles.MainContainer}>
-            <TouchableOpacity style = {TodoPreviewStyles.MainButton}>
+            <TouchableOpacity disabled={true} style = {TodoPreviewStyles.MainButton}>
                 <View style = {TodoPreviewStyles.TitleSection}>
                     <Text
                       numberOfLines = {1}
                       ellipsizeMode = 'tail'
                       style = {TodoPreviewStyles.TitleText}>
-                      {Todo.Title}
+                      {todo.Title}
                     </Text>
                 </View>
                 <View style = {TodoPreviewStyles.DateSection}>
-                  <Text style = {TodoPreviewStyles.DateText}>13/13/13</Text>
+                  <Text style = {TodoPreviewStyles.DateText}>{parseDateTimeAsString(todo)}</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -65,7 +93,7 @@ const TodoListStyles = StyleSheet.create({
         marginBottom:5
     },
     TitleText:{
-      fontSize: 20,
+      fontSize: responsiveFontSize(2.5),
       fontWeight: "bold",
       fontFamily: 'Roboto'
     },
@@ -79,20 +107,20 @@ const TodoListStyles = StyleSheet.create({
         marginBottom:1
     },
     DateText:{
-      fontSize: 10,
-      fontWeight: "normal",
-      fontStyle: ''
+        fontSize: responsiveFontSize(1),
+        fontWeight: "normal",
+        fontStyle: 'italic'
     },
     BodySection:{
       flex:0.8,
       backgroundColor: 'deepskyblue',
-      alignContent: '',
+      alignContent: 'center',
       paddingLeft:10,
       paddingRight:10,
       marginTop:5
     },
     BodyText:{
-      fontSize: 14,
+      fontSize: responsiveFontSize(1.4),
       fontWeight: "normal",
       fontFamily: "Roboto"
     }
@@ -102,9 +130,6 @@ const TodoPreviewStyles = StyleSheet.create({
     MainContainer:{
         flex:1,
         justifyContent: 'center',
-        backgroundColor: '#EEE'
-    },
-    MainButton:{
         marginTop:10,
         marginRight:30,
         marginLeft:30,
@@ -112,14 +137,15 @@ const TodoPreviewStyles = StyleSheet.create({
         paddingBottom:15,
         backgroundColor:'skyblue',
         borderRadius:10,
-        borderWidth:1,
-        borderColor: '#fff',
         flexDirection: 'column',
-        width: null,  // Defined as a parameter?
-        height: null   // Defined as a parameter?
+        height: responsiveHeight(5), // 50% of window height
+        width: responsiveWidth(80), // 50% of window width
+    },
+    MainButton:{
+        flex: 1,
     },
     TitleSection:{
-        flex:0.2,
+        flex:3,
         backgroundColor: 'dodgerblue',
         justifyContent: 'center',
         paddingLeft:10,
@@ -127,12 +153,12 @@ const TodoPreviewStyles = StyleSheet.create({
         marginBottom:5
     },
     TitleText:{
-      fontSize: 20,
+      fontSize: responsiveFontSize(2.5),
       fontWeight: "bold",
       fontFamily: 'Roboto'
     },
     DateSection:{
-        flex:0.1,
+        flex:2,
         backgroundColor: 'turquoise',
         justifyContent: 'center',
         paddingLeft:10,
@@ -141,9 +167,9 @@ const TodoPreviewStyles = StyleSheet.create({
         marginBottom:1
     },
     DateText:{
-      fontSize: 10,
-      fontWeight: "normal",
-      fontStyle: ''
+        fontSize: responsiveFontSize(1),
+        fontWeight: "normal",
+        fontStyle: 'italic'
     }
 });
-export default TodoList;
+export {createAndReturnTodo, TodoList, TodoPreview};

@@ -6,9 +6,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NotePreview, NoteEditor } from './components/notes/Note.js';
-// import { TodoList } from './components/todo/Todo.js';    // Put stuff here
+import { TodoList } from './components/todo/Todo.js';    // Put stuff here
 
 import NoteScreen from "./components/screens/NoteScreen.js";
+import TodoScreen from "./components/screens/TodoScreen.js";
 
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -48,9 +49,8 @@ let NoteStackComponent = () => {
 const TodoStack = createStackNavigator();
 let TodoStackComponent = () => {
   return(
-    <TodoStack.Navigator initialRouteName="NoteScreen">
-      <TodoStack.Screen name="NoteScreen" component={NoteScreen} />
-      <TodoStack.Screen name="NoteEditor" component={NoteEditor} />
+    <TodoStack.Navigator initialRouteName="TodoScreen">
+      <TodoStack.Screen name="TodoScreen" component={TodoScreen} />
     </TodoStack.Navigator>
   )
 }
@@ -76,6 +76,8 @@ export default function App() {
             let iconName;
             switch (route.name) {
               case "Notes": iconName = focused ? "book" : "book-outline";
+                break;
+              case "Todo": iconName = focused ? "checksquare" : "checksquareo";
                 break;
               case "Settings": iconName = focused ? "md-settings" : "md-settings-outline";
                 break;
