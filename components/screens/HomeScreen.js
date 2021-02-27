@@ -2,21 +2,11 @@ import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
-    Button,
     Text,
     View,
-    PanResponder,
-    Animated,
+    ScrollView
 } from 'react-native';
 import { DraggableGrid } from 'react-native-draggable-grid';
-
-const Item = ({item}) => {
-    return(
-        <View>
-            <Text>will be replaced</Text>
-        </View>
-    )
-}
 
 const HomeScreen = () => {
     // const [pan, setPan] = useState(new Animated.ValueXY());
@@ -24,7 +14,7 @@ const HomeScreen = () => {
     //     // Add a listener for the delta value change
     //     pan.addListener(value => _val = value);
     // }, [])
-    
+
     // var _val = { x: 0, y: 0 };
     // // Initialize PanResponder with move handling
     // var panResponder = PanResponder.create({
@@ -62,25 +52,35 @@ const HomeScreen = () => {
     // )
 
     const [data, setData] = useState([
-        {name: "1", key:"one"},
-        {name: "2", key:"two"},
-        {name: "3", key:"three"},
-        {name: "4", key:"four"},
-        {name: "5", key:"five"},
-        {name: "6", key:"six"},
-        {name: "7", key:"seven"}
-        ]);
-    return(
-        <View>
+        { name: "1", key: "one" },
+        { name: "2", key: "two" },
+        { name: "3", key: "three" },
+        { name: "4", key: "four" },
+        { name: "5", key: "five" },
+        { name: "6", key: "six" },
+        { name: "7", key: "seven" }
+    ]);
+
+    const renderItem = (item) => {
+        return (
+            <View style={styles.notePreview}>
+                <Text>{item.name}</Text>
+            </View>
+        );
+    }
+
+    return (
+        <ScrollView>
             <DraggableGrid
                 numColumns={2}
-                renderItem={Item}
                 data={data}
+                renderItem={renderItem}
+                style={styles.container}
                 onDragRelease={data => setData(data)}
             />
-        </View>
+        </ScrollView>
     )
-    
+
 }
 
 export default HomeScreen;
@@ -89,13 +89,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        borderWidth: 1
     },
-    circle: {
-        backgroundColor: "skyblue",
-        width: 20 * 2,
-        height: 20 * 2,
-        borderRadius: 20
+    notePreview: {
+        flex: 1/2,
+        borderWidth: 1
     }
 });
