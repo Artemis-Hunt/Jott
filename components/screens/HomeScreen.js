@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Button,
@@ -7,42 +7,80 @@ import {
     View,
     PanResponder,
     Animated,
-    useState,
-    useEffect
 } from 'react-native';
+import { DraggableGrid } from 'react-native-draggable-grid';
 
-let HomeScreen = () => {
-    const [pan, setPan] = useState(new Animated.ValueXY());
-    useEffect(() => {
-        // Add a listener for the delta value change
-        var _val = { x: 0, y: 0 };
-        pan.addListener(value => _val = value);
-
-        // Initialize PanResponder with move handling
-        var panResponder = PanResponder.create({
-            onStartShouldSetPanResponder: (e, gesture) => true,
-            onPanResponderGrant: (e, gesture) => {
-                pan.setOffset({
-                  x: _val.x,
-                  y:_val.y
-                })
-                pan.setValue({ x:0, y:0 })
-              },
-            onPanResponderMove: Animated.event([
-              null, { dx: pan.x, dy: pan.y }
-            ]),
-          });
-        
-        return () => {
-
-        }
-    }, [])
-
-    return (
-        <View style={styles.container}>
-            <Text>Open up App.js to start working on your app!</Text>
+const Item = ({item}) => {
+    return(
+        <View>
+            <Text>{item.name}</Text>
         </View>
     )
+}
+
+const HomeScreen = () => {
+    // const [pan, setPan] = useState(new Animated.ValueXY());
+    // useEffect(() => {
+    //     // Add a listener for the delta value change
+    //     pan.addListener(value => _val = value);
+    // }, [])
+    
+    // var _val = { x: 0, y: 0 };
+    // // Initialize PanResponder with move handling
+    // var panResponder = PanResponder.create({
+    //     onStartShouldSetPanResponder: (e, gesture) => true,
+    //     onPanResponderGrant: (e, gesture) => {
+    //         pan.setOffset({
+    //             x: _val.x,
+    //             y: _val.y
+    //         })
+    //         pan.setValue({ x: 0, y: 0 })
+    //     },
+    //     onPanResponderMove: Animated.event([
+    //         null, { dx: pan.x, dy: pan.y },
+    //     ], {useNativeDriver: false}),
+    // });
+
+    // const renderDraggable = () => {
+    //     const panStyle = {
+    //         transform: pan.getTranslateTransform()
+    //     }
+    //     return (
+    //         <View style={{ position: "absolute" }}>
+    //             <Animated.View
+    //                 {...panResponder.panHandlers}
+    //                 style={[panStyle, styles.circle]}
+    //             />
+    //         </View>
+    //     );
+    // }
+
+    // return (
+    //     <View style={styles.container}>
+    //         {renderDraggable()}
+    //     </View>
+    // )
+
+    const [data, setData] = useState([
+        {name: "1", key:"one"},
+        {name: "2", key:"two"},
+        {name: "3", key:"three"},
+        {name: "4", key:"four"},
+        {name: "5", key:"five"},
+        {name: "6", key:"six"},
+        {name: "7", key:"seven"}
+        ]);
+    return(
+        <View>
+            <DraggableGrid
+                numColumns={2}
+                renderItem={Item}
+                data={data}
+                onDragRelease={data => setData(data)}
+            />
+        </View>
+    )
+    
 }
 
 export default HomeScreen;
@@ -56,8 +94,8 @@ const styles = StyleSheet.create({
     },
     circle: {
         backgroundColor: "skyblue",
-        width: CIRCLE_RADIUS * 2,
-        height: CIRCLE_RADIUS * 2,
-        borderRadius: CIRCLE_RADIUS
+        width: 20 * 2,
+        height: 20 * 2,
+        borderRadius: 20
     }
 });
