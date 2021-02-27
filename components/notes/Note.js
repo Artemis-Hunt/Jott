@@ -12,19 +12,33 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-let NotePreview = (props) => {
-return(
-    <View style={NotePreviewStyles.MainContainer}>
-        <TouchableOpacity style={NotePreviewStyles.MainButton}>
-            <View style={NotePreviewStyles.TitleSection}>
-                <Text style={NotePreviewStyles.TitleText}>{Note.Title}</Text>
-            </View>
-            <View style={NotePreviewStyles.BodySection}>
-                <Text style={NotePreviewStyles.BodyText}>{Note.Text}</Text>
-            </View>
-        </TouchableOpacity>
-    </View>
-)}
+let NotePreview = (props, Note) => {
+    return(
+        <View style={NotePreviewStyles.MainContainer}>
+            <TouchableOpacity style={NotePreviewStyles.MainButton}>
+                <View style={NotePreviewStyles.TitleSection}>
+                    <Text
+                      numberOfLines={2}
+                      ellipsizeMode='tail'
+                      style={NotePreviewStyles.TitleText}>
+                      {Note.Title}
+                    </Text>
+                </View>
+                <View style={NotePreviewStyles.DateSection}>
+                  <Text style={NotePreviewStyles.DateText}>{Note.Date_String()}</Text>
+                </View>
+                <View style={NotePreviewStyles.BodySection}>
+                    <Text
+                      numberOfLines={4}
+                      ellipsizeMode='tail'
+                      style={NotePreviewStyles.BodyText}>
+                      {Note.Text}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        </View>
+    )
+}
 
 let NoteEditor = (props) => {
 return(
@@ -66,6 +80,20 @@ const NotePreviewStyles = StyleSheet.create({
       fontSize: 20,
       fontWeight: "bold",
       fontFamily: 'Roboto'
+    },
+    DateSection:{
+        flex:0.1,
+        backgroundColor: 'turquoise',
+        justifyContent: 'center',
+        paddingLeft:10,
+        paddingRight:10,
+        marginTop:1,
+        marginBottom:1
+    },
+    DateText:{
+      fontSize: 10,
+      fontWeight: "normal",
+      fontStyle: ''
     },
     BodySection:{
       flex:0.8,
