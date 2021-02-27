@@ -4,25 +4,37 @@ import {
     StyleSheet,
     Text,
     View,
-    ScrollView
+    ScrollView,
+    Button
 } from 'react-native';
 import { DraggableGrid } from 'react-native-draggable-grid';
 import { createAndReturnNote, NoteEditor, NotePreview } from '../notes/Note'
+import { addNoteToDb, fetchNotesFromDb, saveNotesToDb } from "../database/pouchdb"
 
 const NoteScreen = (props) => {
-    const sampleData = new Array(25);
-    for (let i = 0; i < sampleData.length; i++) {
-        sampleData[i] = JSON.parse(JSON.stringify(createAndReturnNote()));
-        sampleData[i].key = sampleData[i].Title + i;
-    }
+    const [data, setData] = useState(new Array(0));
 
-    const [data, setData] = useState(sampleData);
+    useEffect(() => {
+        fetchNotesFromDb().then(data => setData(data));
+        props.navigation.setOptions({
+            headerRight: () =>
+                <Button
+                    onPress={() => {
+                        let tempData = [...data];
+                        tempData.unshift(createAndReturnNote());
+                        setData(tempData);
+                        saveNotesToDb(data);
+                    }
+                    }
+                    title={"Add"} />
+        })
+    }, [])
+
     const renderItem = (item) => {
         return (
             <View style={styles.notePreview}>
                 <NotePreview
                     note={item}
-                    navigation={props.navigation}
                 />
             </View>
         );
@@ -35,17 +47,21 @@ const NoteScreen = (props) => {
             style={styles.container}
             scrollEnabled={!dragging}
         >
-            <DraggableGrid
-                numColumns={2}
-                data={data}
-                renderItem={renderItem}
-                onDragWillStart={() => setDragging(true)}
-                onDragRelease={data => {
-                    setData(data);
-                    setDragging(false);
-                }
-                }
-            />
+            {data.length === 0 ? <View></View> :
+                <DraggableGrid
+                    numColumns={2}
+                    data={data}
+                    renderItem={renderItem}
+                    onItemPress={item => props.navigation.navigate("NoteEditor", {
+                        item: item
+                    })}
+                    onDragWillStart={() => setDragging(true)}
+                    onDragRelease={data => {
+                        setData(data);
+                        setDragging(false);
+                    }
+                    }
+                />}
         </ScrollView>
     )
 

@@ -1,9 +1,8 @@
 import React from 'react';
 import {
   StyleSheet,
-  TouchableOpacity,
-  Text,
   View,
+  Text,
 } from 'react-native';
 
 // Note Object
@@ -11,12 +10,13 @@ const createAndReturnNote = (title, text) => {
   let dateCreated = new Date();
   let dateEdited = new Date();
   let Note = {
+    key: dateCreated.toLocaleString("en-SG"),
     Title: "This is also a placeholder Title which is very very very very long.",
     Text: "Dynamic Stuff Should Go Here\nnewline\nasdflajdsfadsjflwer 12345678\nlolol\nlolol",
     DateCreated: dateCreated.toLocaleDateString("en-SG"),  // Will be edited once in the constructor
-    TimeCreated: dateCreated.toLocaleDateString("en-SG"),
+    TimeCreated: dateCreated.toLocaleTimeString("en-SG"),
     DateEdited: dateEdited.toLocaleDateString("en-SG"),  // Will be edited once in the constructor
-    TimeEdited: dateEdited.toLocaleDateString("en-SG")
+    TimeEdited: dateEdited.toLocaleTimeString("en-SG")
   }
   return Note;
 }
@@ -31,7 +31,7 @@ const NotePreview = ({ note, navigation }) => {
 
   return (
     <View style={NotePreviewStyles.MainContainer}>
-      <TouchableOpacity style={NotePreviewStyles.MainButton} disabled={true}>
+      <View style={NotePreviewStyles.MainButton}>
         <View style={NotePreviewStyles.TitleSection}>
           <Text
             numberOfLines={2}
@@ -51,14 +51,17 @@ const NotePreview = ({ note, navigation }) => {
             {note.Text}
           </Text>
         </View>
-      </TouchableOpacity>
+      </View>
     </View>
   )
 }
 
-const NoteEditor = (props) => {
+const NoteEditor = ({route, navigation}) => {
+  let { item } = route.params
   return (
-    <View></View>
+    <View>
+      <Text>{item.Title}</Text>
+    </View>
   )
 }
 
