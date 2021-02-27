@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NotePreview, NoteEditor } from './components/notes/Note.js';
+// import { TodoList } from './components/todo/Todo.js';    // Put stuff here
 
 import NoteScreen from "./components/screens/NoteScreen.js";
 
@@ -43,6 +44,17 @@ let NoteStackComponent = () => {
   )
 }
 
+// TodoStack for the Todo Home Page
+const TodoStack = createStackNavigator();
+let TodoStackComponent = () => {
+  return(
+    <TodoStack.Navigator initialRouteName="NoteScreen">
+      <TodoStack.Screen name="NoteScreen" component={NoteScreen} />
+      <TodoStack.Screen name="NoteEditor" component={NoteEditor} />
+    </TodoStack.Navigator>
+  )
+}
+
 const SettingsStack = createStackNavigator();
 let SettingsStackComponent = () => {
   return (
@@ -73,6 +85,7 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Notes" component={NoteStackComponent} />
+        <Tab.Screen name="Todo" component={TodoStackComponent} />
         <Tab.Screen name="Settings" component={SettingsStackComponent} />
       </Tab.Navigator>
     </NavigationContainer>

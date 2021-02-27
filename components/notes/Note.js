@@ -4,24 +4,31 @@ import {
   TouchableOpacity,
   Text,
   View,
+  Button,
 } from 'react-native';
+
+import {
+    responsiveHeight,
+    responsiveWidth,
+    responsiveFontSize
+} from "react-native-responsive-dimensions";
 
 // Note Object
 const createAndReturnNote = (title, text) => {
   let dateCreated = new Date();
   let dateEdited = new Date();
   let Note = {
-    Title: "This is also a placeholder Title which is very very very very long.",
-    Text: "Dynamic Stuff Should Go Here\nnewline\nasdflajdsfadsjflwer 12345678\nlolol\nlolol",
+    Title: (title.trim()=="") ? "Default Title" : title,
+    Text: (text.trim()=="") ? "Default Text" : text,
     DateCreated: dateCreated.toLocaleDateString("en-SG"),  // Will be edited once in the constructor
-    TimeCreated: dateCreated.toLocaleDateString("en-SG"),
+    TimeCreated: dateCreated.toLocaleTimeString("en-SG"),
     DateEdited: dateEdited.toLocaleDateString("en-SG"),  // Will be edited once in the constructor
-    TimeEdited: dateEdited.toLocaleDateString("en-SG")
+    TimeEdited: dateEdited.toLocaleTimeString("en-SG")
   }
   return Note;
 }
 
-const NotePreview = ({ note }) => {
+const NotePreview = ({ note, props }) => {
 
   const parseDateTimeAsString = (note) => {
     let tmp_created = "Created " + note.DateCreated + " " + note.TimeCreated;
@@ -31,7 +38,10 @@ const NotePreview = ({ note }) => {
 
   return (
     <View style={NotePreviewStyles.MainContainer}>
-      <TouchableOpacity style={NotePreviewStyles.MainButton} disabled={true}>
+      <TouchableOpacity style={NotePreviewStyles.MainButton}
+        onPress = {() => props.navigation.navigate("NoteEditor")}
+        disabled={false}
+        >
         <View style={NotePreviewStyles.TitleSection}>
           <Text
             numberOfLines={2}
@@ -58,7 +68,14 @@ const NotePreview = ({ note }) => {
 
 const NoteEditor = (props) => {
   return (
-    <View></View>
+    <View>
+        <Button
+            title="Profile"
+            onPress={() => props.navigation.navigate("NoteScreen")}
+        >
+            <Text>This is the note editor</Text>
+        </Button>
+    </View>
   )
 }
 
@@ -69,20 +86,19 @@ const NotePreviewStyles = StyleSheet.create({
   MainContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#EEE'
-  },
-  MainButton: {
-    flex: 1,
     marginTop: 10,
-    marginRight: 30,
-    marginLeft: 30,
+    marginRight: 10,
+    marginLeft: 10,
     paddingTop: 15,
     paddingBottom: 15,
     backgroundColor: 'skyblue',
+    height: responsiveHeight(42.5), // 50% of window height
+    width: responsiveWidth(42.5), // 50% of window width
     borderRadius: 10,
     flexDirection: 'column',
-    width: null,  // Defined as a parameter?
-    height: null   // Defined as a parameter?
+  },
+  MainButton: {
+    flex: 1
   },
   TitleSection: {
     flex: 0.2,
@@ -90,15 +106,15 @@ const NotePreviewStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 10,
     paddingRight: 10,
-    marginBottom: 5
+    marginBottom: 3
   },
   TitleText: {
-    fontSize: 10,
+    fontSize: responsiveFontSize(2.5),
     fontWeight: "bold",
     fontFamily: 'Roboto'
   },
   DateSection: {
-    flex: 0.1,
+    flex: 0.15,
     backgroundColor: 'turquoise',
     justifyContent: 'center',
     paddingLeft: 10,
@@ -107,18 +123,19 @@ const NotePreviewStyles = StyleSheet.create({
     marginBottom: 1
   },
   DateText: {
-    fontSize: 10,
+    fontSize: responsiveFontSize(1),
     fontWeight: "normal",
+    fontStyle: 'italic'
   },
   BodySection: {
     flex: 0.8,
     backgroundColor: 'deepskyblue',
     paddingLeft: 10,
     paddingRight: 10,
-    marginTop: 5
+    marginTop: 3
   },
   BodyText: {
-    fontSize: 14,
+    fontSize: responsiveFontSize(1.4),
     fontWeight: "normal",
     fontFamily: "Roboto"
   }
