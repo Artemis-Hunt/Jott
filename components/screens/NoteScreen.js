@@ -18,16 +18,15 @@ const NoteScreen = (props) => {
         fetchNotesFromDb().then(data => setData(data));
         props.navigation.setOptions({
             headerRight: () =>
-                    <Button
-                        onPress={() => {
-                            let oldData = data;
-                            setData(data => [createAndReturnNote(), ...data]);
-                            saveNotesToDb(data);
-                        }
-                        }
-                        title={"Add"} />
+                <Button
+                    onPress={() => {
+                        setData(data => [createAndReturnNote(), ...data]);
+                        saveNotesToDb(data);
+                    }
+                    }
+                    title={"Add"} />
         })
-    }, [])
+    }, [data])
 
     const renderItem = (item) => {
         return (

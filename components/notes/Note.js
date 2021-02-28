@@ -1,13 +1,15 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
   Keyboard,
-  TextInput
+  TextInput,
+  TouchableOpacity,
+  Button
 } from 'react-native';
 import { saveNotesToDb } from '../database/pouchdb';
 
-import { PreviewStyles, NoteEditorStyles} from '../styles/previewStyles'
+import { PreviewStyles, NoteEditorStyles } from '../styles/previewStyles'
 
 // Note Object
 const createAndReturnNote = (title, text) => {
@@ -60,46 +62,33 @@ const NotePreview = ({ note, navigation }) => {
   )
 }
 
-const NoteEditor = ({route, navigation}) => {
+const NoteEditor = ({ route, navigation }) => {
 
   let { item, notes } = route.params
-  let titleText = item.Title;
-  let bodyText = item.Text;
-  const [value_title, onChangeText_title] = React.useState(titleText);
-  const [value_body, onChangeText_body] = React.useState(bodyText);
+  const [value_title, onChangeText_title] = React.useState(item.Title);
+  const [value_body, onChangeText_body] = React.useState(item.Text);
 
-  useEffect(() => {
-    Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
-    Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
-
-  // cleanup function
-  return () => {
-    Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
-    Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
-  };
-  }, []);
-
-  const _keyboardDidShow = () => {
-    // alert("Keyboard Shown");
-  };
-  
-  const _keyboardDidHide = () => {
+  const saveText = (text, isTitle) => {
     // alert("Keyboard Hidden");
-    item.Title = value_title;
-    item.Text = value_body;
-    item.TimeEdited = new Date();
-
+    let lastEdit = new Date();
+    if (isTitle)
+      item.Title = text;
+    else
+      item.Text = text;
+    item.DateEdited = lastEdit.toLocaleDateString("en-SG")
+    item.TimeEdited = lastEdit.toLocaleTimeString("en-SG")
     saveNotesToDb(notes);
+    //alert(item.Title);
   };
 
   return (
     <View>
-      <TextInput 
+      <TextInput
         placeholder="Title..."
         multiline
-        numberOfLines = {2}
+        numberOfLines={2}
         onSubmitEditing={Keyboard.dismiss}
-        onChangeText={text => onChangeText_title(text)}
+        onChangeText={text => { onChangeText_title(text); saveText(text, true) }}
         value={value_title}
       ></TextInput>
       <Text>
@@ -108,9 +97,9 @@ const NoteEditor = ({route, navigation}) => {
       <TextInput
         placeholder="Body"
         multiline
-        numberOfLines = {2}
+        numberOfLines={2}
         onSubmitEditing={Keyboard.dismiss}
-        onChangeText={text => onChangeText_body(text)}
+        onChangeText={text => { onChangeText_body(text); saveText(text, false) }}
         value={value_body}
       />
     </View>
