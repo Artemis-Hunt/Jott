@@ -3,7 +3,6 @@ import { CheckBox } from 'react-native-elements'
 import CheckboxList from 'rn-checkbox-list';
 
 import {
-    StyleSheet,
     TouchableOpacity,
     Text,
     View,
@@ -12,11 +11,7 @@ import {
     Touchable
 } from 'react-native';
 
-import {
-    responsiveHeight,
-    responsiveWidth,
-    responsiveFontSize
-} from "react-native-responsive-dimensions";
+import { PreviewStyles, TodoListStyles } from '../styles/previewStyles'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -61,115 +56,22 @@ let TodoPreview = ({todo}) => {
     }
 
     return(
-        <View style = {TodoPreviewStyles.MainContainer}>
-            <TouchableOpacity disabled={true} style = {TodoPreviewStyles.MainButton}>
-                <View style = {TodoPreviewStyles.TitleSection}>
+        <View style = {PreviewStyles.MainTodoContainer}>
+            <TouchableOpacity disabled={true} style = {PreviewStyles.MainButton}>
+                <View style = {PreviewStyles.TitleSection}>
                     <Text
                       numberOfLines = {1}
                       ellipsizeMode = 'tail'
-                      style = {TodoPreviewStyles.TitleText}>
+                      style = {PreviewStyles.TitleText}>
                       {todo.Title}
                     </Text>
                 </View>
-                <View style = {TodoPreviewStyles.DateSection}>
-                  <Text style = {TodoPreviewStyles.DateText}>{parseDateTimeAsString(todo)}</Text>
+                <View style = {PreviewStyles.DateSection}>
+                  <Text style = {PreviewStyles.DateText}>{parseDateTimeAsString(todo)}</Text>
                 </View>
             </TouchableOpacity>
         </View>
     )
 }
-const TodoListStyles = StyleSheet.create({
-    MainContainer:{
-        flex:1,
-        justifyContent: 'center',
-        backgroundColor: '#EEE'
-    },
-    TitleSection:{
-        flex:0.2,
-        backgroundColor: 'dodgerblue',
-        justifyContent: 'center',
-        paddingLeft:10,
-        paddingRight:10,
-        marginBottom:5
-    },
-    TitleText:{
-      fontSize: responsiveFontSize(2.5),
-      fontWeight: "bold",
-      fontFamily: 'Roboto'
-    },
-    DateSection:{
-        flex:0.1,
-        backgroundColor: 'turquoise',
-        justifyContent: 'center',
-        paddingLeft:10,
-        paddingRight:10,
-        marginTop:1,
-        marginBottom:1
-    },
-    DateText:{
-        fontSize: responsiveFontSize(1),
-        fontWeight: "normal",
-        fontStyle: 'italic'
-    },
-    BodySection:{
-      flex:0.8,
-      backgroundColor: 'deepskyblue',
-      alignContent: 'center',
-      paddingLeft:10,
-      paddingRight:10,
-      marginTop:5
-    },
-    BodyText:{
-      fontSize: responsiveFontSize(1.4),
-      fontWeight: "normal",
-      fontFamily: "Roboto"
-    }
-});
 
-const TodoPreviewStyles = StyleSheet.create({
-    MainContainer:{
-        flex:1,
-        justifyContent: 'center',
-        marginTop:10,
-        marginRight:30,
-        marginLeft:30,
-        paddingTop:15,
-        paddingBottom:15,
-        backgroundColor:'skyblue',
-        borderRadius:10,
-        flexDirection: 'column',
-        height: responsiveHeight(5), // 50% of window height
-        width: responsiveWidth(80), // 50% of window width
-    },
-    MainButton:{
-        flex: 1,
-    },
-    TitleSection:{
-        flex:3,
-        backgroundColor: 'dodgerblue',
-        justifyContent: 'center',
-        paddingLeft:10,
-        paddingRight:10,
-        marginBottom:5
-    },
-    TitleText:{
-      fontSize: responsiveFontSize(2.5),
-      fontWeight: "bold",
-      fontFamily: 'Roboto'
-    },
-    DateSection:{
-        flex:2,
-        backgroundColor: 'turquoise',
-        justifyContent: 'center',
-        paddingLeft:10,
-        paddingRight:10,
-        marginTop:1,
-        marginBottom:1
-    },
-    DateText:{
-        fontSize: responsiveFontSize(1),
-        fontWeight: "normal",
-        fontStyle: 'italic'
-    }
-});
 export {createAndReturnTodo, TodoList, TodoPreview};
