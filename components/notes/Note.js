@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
-  StyleSheet,
   View,
   Text,
+  Keyboard,
+  TextInput
 } from 'react-native';
+import { saveNotesToDb } from '../database/pouchdb';
 
 import { PreviewStyles, NoteEditorStyles} from '../styles/previewStyles'
 
@@ -23,13 +25,13 @@ const createAndReturnNote = (title, text) => {
   return Note;
 }
 
-const NotePreview = ({ note, navigation }) => {
+const parseDateTimeAsString = (note) => {
+  let tmp_created = "Created " + note.DateCreated + " " + note.TimeCreated;
+  let tmp_edited = "Edited " + note.DateEdited + " " + note.TimeEdited;
+  return tmp_created + '\n' + tmp_edited;
+}
 
-  const parseDateTimeAsString = (note) => {
-    let tmp_created = "Created " + note.DateCreated + " " + note.TimeCreated;
-    let tmp_edited = "Edited " + note.DateEdited + " " + note.TimeEdited;
-    return tmp_created + '\n' + tmp_edited;
-  }
+const NotePreview = ({ note, navigation }) => {
 
   return (
     <View style={PreviewStyles.MainNoteContainer}>
@@ -59,10 +61,58 @@ const NotePreview = ({ note, navigation }) => {
 }
 
 const NoteEditor = ({route, navigation}) => {
-  let { item } = route.params
+
+  let { item, notes } = route.params
+  let titleText = item.Title;
+  let bodyText = item.Text;
+  const [value_title, onChangeText_title] = React.useState(titleText);
+  const [value_body, onChangeText_body] = React.useState(bodyText);
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+    Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+
+  // cleanup function
+  return () => {
+    Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+    Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+  };
+  }, []);
+
+  const _keyboardDidShow = () => {
+    // alert("Keyboard Shown");
+  };
+  
+  const _keyboardDidHide = () => {
+    // alert("Keyboard Hidden");
+    item.Title = value_title;
+    item.Text = value_body;
+    item.TimeEdited = new Date();
+
+    saveNotesToDb(notes);
+  };
+
   return (
     <View>
-      <Text>{item.Title}</Text>
+      <TextInput 
+        placeholder="Title..."
+        multiline
+        numberOfLines = {2}
+        onSubmitEditing={Keyboard.dismiss}
+        onChangeText={text => onChangeText_title(text)}
+        value={value_title}
+      ></TextInput>
+      <Text>
+        {parseDateTimeAsString(item)}
+      </Text>
+      <TextInput
+        placeholder="Body"
+        multiline
+        numberOfLines = {2}
+        onSubmitEditing={Keyboard.dismiss}
+        onChangeText={text => onChangeText_body(text)}
+        value={value_body}
+      />
     </View>
   )
 }

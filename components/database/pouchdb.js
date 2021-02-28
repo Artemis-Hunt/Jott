@@ -22,6 +22,5 @@ export const saveNotesToDb = (currentNotesArray) => {
         notes.notesArray = currentNotesArray;
         return notesDb.put(notes);
     })
-    
 }
 

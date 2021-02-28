@@ -32,7 +32,7 @@ const NoteScreen = (props) => {
 
     const renderItem = (item) => {
         return (
-            <View style={styles.notePreview}>
+            <View>
                 <NotePreview
                     note={item}
                 />
@@ -53,7 +53,8 @@ const NoteScreen = (props) => {
                     data={data}
                     renderItem={renderItem}
                     onItemPress={item => props.navigation.navigate("NoteEditor", {
-                        item: item
+                        item: item,
+                        notes: data
                     })}
                     onDragWillStart={() => setDragging(true)}
                     onDragRelease={data => {

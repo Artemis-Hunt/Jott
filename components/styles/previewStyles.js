@@ -32,7 +32,7 @@ const PreviewStyles = StyleSheet.create({
         backgroundColor:'skyblue',
         borderRadius:10,
         flexDirection: 'column',
-        height: responsiveHeight(43), // 50% of window height
+        height: responsiveHeight(37), // 50% of window height
         width: responsiveWidth(43), // 50% of window width
     },
     MainButton:{
@@ -47,7 +47,7 @@ const PreviewStyles = StyleSheet.create({
         marginBottom:5
     },
     TitleText:{
-      fontSize: responsiveFontSize(2.5),
+      fontSize: responsiveFontSize(2),
       fontWeight: "bold",
       fontFamily: 'Roboto'
     },
